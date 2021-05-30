@@ -11,7 +11,7 @@
   <a href="https://packagist.org/packages/pharaonic/laravel-seo" target="_blank"><img src="https://poser.pugx.org/pharaonic/laravel-seo/downloads" alt="Packagist Downloads"></a>
 </p>
 
-<h3 align="center">SEO generates meta tags with quick and easy functions & blade directives.</h3>
+<h3 align="center">Generates meta tags with quick and easy functions & blade directives.</h3>
 <br>
 
 ## Documentation
