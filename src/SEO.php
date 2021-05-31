@@ -99,8 +99,12 @@ class SEO
 
 
         // Images
-        foreach ($this->images as $img)
-            $output .= '<meta property="twitter:image" content="' . $img . '">' . PHP_EOL;
+        if (count($this->images) == 1) {
+            $output .= '<meta property="twitter:image" content="' . $this->images[0] . '">' . PHP_EOL;
+        } else {
+            foreach ($this->images as $index => $img)
+                $output .= '<meta property="twitter:image' . $index . '" content="' . $img . '">' . PHP_EOL;
+        }
 
         return $output;
     }
@@ -117,7 +121,6 @@ class SEO
     {
         $value = $model->{$column};
         if (!$value) return;
-
         switch (gettype($value)) {
             case 'object':
                 switch (get_class($value)) {
@@ -129,7 +132,6 @@ class SEO
                         if ($column == 'images' && in_array('Pharaonic\Laravel\Images\HasImages', class_uses($model)))
                             foreach ($value as $img)
                                 $this->setImage($img->url);
-
                         break;
                 }
                 break;
