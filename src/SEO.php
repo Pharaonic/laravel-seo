@@ -106,6 +106,40 @@ class SEO
     }
 
     /**
+     * Preparing Model Value
+     *
+     * @param Model $model
+     * @param string $name
+     * @param string $column
+     * @return void
+     */
+    private function prepareValue(Model $model, string $name, string $column)
+    {
+        $value = $model->{$column};
+        if (!$value) return;
+
+        switch (gettype($value)) {
+            case 'object':
+                switch (get_class($value)) {
+                    case 'Pharaonic\Laravel\Uploader\Upload':
+                    case 'Pharaonic\Laravel\Files\File':
+                        $this->setImage($value->url);
+                        break;
+                    case 'Illuminate\Support\Collection':
+                        if ($column == 'images' && in_array('Pharaonic\Laravel\Images\HasImages', class_uses($model)))
+                            foreach ($value as $img)
+                                $this->setImage($img->url);
+
+                        break;
+                }
+                break;
+            default:
+                $this->{'set' . ucfirst($name)}($value);
+                break;
+        }
+    }
+
+    /**
      * Generate from Model
      *
      * @param Model $model
@@ -118,8 +152,8 @@ class SEO
 
             // Columns
             if (isset($data['columns']) && is_array($data['columns']))
-                foreach ($data['columns'] as $name => $value)
-                    $this->{'set' . $name}($model->{$value} ?? null);
+                foreach ($data['columns'] as $name => $column)
+                    $this->prepareValue($model, $name, $column);
 
             // Meta
             if (isset($data['meta']) && is_array($data['meta']))
