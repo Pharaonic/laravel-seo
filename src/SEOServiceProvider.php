@@ -4,7 +4,8 @@ namespace Pharaonic\Laravel\SEO;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Pharaonic\Laravel\SEO\SEO;
+use Illuminate\Support\Str;
+use Pharaonic\Laravel\SEO\Classes\Manager;
 
 class SEOServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,7 @@ class SEOServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 
+        $this->app->singleton('pharaonic-seo', fn () => new Manager);
     }
 
     /**
@@ -25,43 +26,18 @@ class SEOServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Initialization
-        $this->app->instance('SEO', new SEO);
+        // Config
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'Pharaonic.seo');
+        $this->publishes([
+            __DIR__ . '/../config/config.php' => config_path('Pharaonic/seo.php'),
+        ], ['config', 'seo', 'pharaonic']);
 
 
-        ////////////////////////////////////////////////////// Blade
-
-
-        // Generate ALL
-        Blade::directive('seo', function () {
-            return '<?php echo seo()->generate(); ?>';
-        });
-
-        // Generate Default
-        Blade::directive('seoDefault', function () {
-            return '<?php echo seo()->generate(\'default\'); ?>';
-        });
-
-        // Generate Twitter
-        Blade::directive('seoTwitter', function () {
-            return '<?php echo seo()->generate(\'twitter\'); ?>';
-        });
-
-        // Generate OpenGraph
-        Blade::directive('seoOpenGraph', function () {
-            return '<?php echo seo()->generate(\'open-graph\'); ?>';
-        });
-
-        // Tags Directive
-        foreach ([
-            'title', 'description', 'keywords', 'author', 'copyrights', 'robots',
-            'canonical', 'prev', 'next', 'alternate',
-            'meta', 'charset',
-            'og', 'twitter', 'image'
-        ] as $n) {
-            Blade::directive($n, function ($data) use ($n) {
-                return '<?php seo()->set' . ucfirst($n) . '(' . $data . '); ?>';
-            });
+        // Blade Directives
+        Blade::directive('seo', fn () => '<?php echo seo()->render(); ?>');
+        foreach (seo()->getElementsNames() as $name) {
+            $name = Str::camel($name);
+            Blade::directive($name, fn ($data) => '<?php seo()->' . $name . '->set(' . $data . '); ?>');
         }
     }
 }

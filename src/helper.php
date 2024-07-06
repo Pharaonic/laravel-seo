@@ -1,11 +1,13 @@
 <?php
 
-/**
- * Getting SEO Object
- *
- * @return Pharaonic\Laravel\SEO\SEO
- */
-function seo()
-{
-    return app('SEO');
+if (!function_exists('seo')) {
+    /**
+     * Get the SEO instance.
+     *
+     * @return Pharaonic\Laravel\SEO\Classes\Manager
+     */
+    function seo()
+    {
+        return app('pharaonic-seo');
+    }
 }
