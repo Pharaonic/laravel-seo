@@ -43,10 +43,10 @@ class SEOTest extends TestCase
             <meta name="author" content="Raggi">
             <meta name="robots" content="index, follow">
             <meta name="copyrights" content="Pharaonic 2024">
-            <link rel="next" content="https://pharaonic.io/en">
-            <link rel="prev" content="https://pharaonic.io/en">
-            <link rel="alternate" hreflang="ar" href="https://pharaonic.io/ar">
+            <link rel="next" href="https://pharaonic.io/next">
+            <link rel="prev" href="https://pharaonic.io/prev">
             <link rel="alternate" hreflang="en" href="https://pharaonic.io/en">
+            <link rel="alternate" hreflang="ar" href="https://pharaonic.io/ar">
             <link rel="canonical" href="https://pharaonic.io">
             <meta name="og:url" content="http://localhost">
             <meta name="og:locale" content="en">
