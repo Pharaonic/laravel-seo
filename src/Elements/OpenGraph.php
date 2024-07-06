@@ -118,4 +118,17 @@ class OpenGraph implements Renderable
 
         return $output;
     }
+
+    /**
+     * Get the element directives.
+     *
+     * @return array
+     */
+    public function getDirectives(): array
+    {
+        return [
+            'openGraphType' => fn ($data) => '<?php seo()->openGraph->setType(' . $data . '); ?>',
+            'openGraphSiteName' => fn ($data) => '<?php seo()->openGraph->setSiteName(' . $data . '); ?>',
+        ];
+    }
 }

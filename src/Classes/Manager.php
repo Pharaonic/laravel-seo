@@ -120,13 +120,19 @@ class Manager implements Renderable
     }
 
     /**
-     * Get Elements Names.
+     * Get Elements Directives.
      *
      * @return array
      */
-    final public function getElementsNames():array
+    final public function getDirectives(): array
     {
-        return array_keys($this->elements);
+        $directives = [];
+        $list = array_map(fn ($element) => $element->getDirectives(), $this->elements);
+        array_walk_recursive($list, function ($value, $key) use (&$directives) {
+            $directives[$key] = $value;
+        });
+
+        return $directives;
     }
 
     /**
@@ -143,7 +149,13 @@ class Manager implements Renderable
 
         foreach ($model->seo() as $key => $value) {
             if (isset($this->elements[$key])) {
-                $this->elements[$key]->set($value);
+                if (in_array($key, ['open-graph', 'twitter'])) {
+                    foreach ($value as $k => $v) {
+                        $this->elements[$key]->{'set' . ucfirst($k)}($v);
+                    }
+                } else {
+                    $this->elements[$key]->set($value);
+                }
             } else {
                 throw new \Exception("Element $key not found.");
             }

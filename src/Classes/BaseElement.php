@@ -3,6 +3,7 @@
 namespace Pharaonic\Laravel\SEO\Classes;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Str;
 
 abstract class BaseElement implements Renderable
 {
@@ -48,5 +49,17 @@ abstract class BaseElement implements Renderable
         $this->{'content'} = null;
 
         return $this;
+    }
+
+    /**
+     * Get the element directives.
+     *
+     * @return array
+     */
+    public function getDirectives(): array
+    {
+        return [
+            Str::camel($this->name) => fn ($data) => '<?php seo()->' . $this->name . '->set(' . $data . '); ?>'
+        ];
     }
 }

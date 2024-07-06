@@ -25,6 +25,9 @@ class Article extends Model implements SEOContract
             'title' => $this->title,
             'description' => $this->description,
             'keywords' => $this->keywords,
+            'twitter' => [
+                'card' => 'app'
+            ]
         ];
     }
 }

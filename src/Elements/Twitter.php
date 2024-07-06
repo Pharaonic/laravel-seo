@@ -149,4 +149,18 @@ class Twitter implements Renderable
 
         return $output;
     }
+
+    /**
+     * Get the element directives.
+     *
+     * @return array
+     */
+    public function getDirectives(): array
+    {
+        return [
+            'twitterCard' => fn ($data) => '<?php seo()->twitter->setCard(' . $data . '); ?>',
+            'twitterSite' => fn ($data) => '<?php seo()->twitter->setSite(' . $data . '); ?>',
+            'twitterCreator' => fn ($data) => '<?php seo()->twitter->setCreator(' . $data . '); ?>',
+        ];
+    }
 }

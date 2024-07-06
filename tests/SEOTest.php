@@ -77,5 +77,7 @@ class SEOTest extends TestCase
         $this->assertSame(seo()->title->get(), $article->title);
         $this->assertSame(seo()->description->get(), $article->description);
         $this->assertSame(seo()->keywords->get(), explode(', ', $article->keywords));
+        $this->assertSame(seo()->twitter->getCard(), 'app');
+
     }
 }

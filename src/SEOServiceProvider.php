@@ -4,7 +4,6 @@ namespace Pharaonic\Laravel\SEO;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Pharaonic\Laravel\SEO\Classes\Manager;
 
 class SEOServiceProvider extends ServiceProvider
@@ -32,12 +31,10 @@ class SEOServiceProvider extends ServiceProvider
             __DIR__ . '/../config/config.php' => config_path('Pharaonic/seo.php'),
         ], ['config', 'seo', 'pharaonic']);
 
-
         // Blade Directives
         Blade::directive('seo', fn () => '<?php echo seo()->render(); ?>');
-        foreach (seo()->getElementsNames() as $name) {
-            $name = Str::camel($name);
-            Blade::directive($name, fn ($data) => '<?php seo()->' . $name . '->set(' . $data . '); ?>');
+        foreach (seo()->getDirectives() as $name => $directive) {
+            Blade::directive($name, $directive);
         }
     }
 }

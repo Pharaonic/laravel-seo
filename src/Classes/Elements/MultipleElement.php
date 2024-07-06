@@ -2,6 +2,7 @@
 
 namespace Pharaonic\Laravel\SEO\Classes\Elements;
 
+use Illuminate\Support\Str;
 use Pharaonic\Laravel\SEO\Classes\BaseElement;
 
 abstract class MultipleElement extends BaseElement
@@ -49,5 +50,20 @@ abstract class MultipleElement extends BaseElement
         }
 
         return $this;
+    }
+
+    /**
+     * Get the element directives.
+     *
+     * @return array
+     */
+    public function getDirectives(): array
+    {
+        $name = Str::camel($this->name);
+
+        return [
+            $name => fn ($data) => '<?php seo()->' . $this->name . '->set(' . $data . '); ?>',
+            Str::singular($name) => fn ($data) => '<?php seo()->' . $this->name . '->add(' . $data . '); ?>'
+        ];
     }
 }
