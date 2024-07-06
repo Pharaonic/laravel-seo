@@ -12,12 +12,15 @@
     "authors": [
         {
             "name": "Moamen Eltouny (Raggi)",
-            "email": "raggi@raggitech.com"
+            "email": "raggigroup@gmail.com"
         }
     ],
     "require": {
-        "php": ">=7.2",
-        "laravel/framework": ">=6.0"
+        "php": ">=8.0",
+        "laravel/framework": ">=9.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.0"
     },
     "config": {
         "sort-packages": true
@@ -26,17 +29,21 @@
         "laravel": {
             "providers": [
                 "Pharaonic\\Laravel\\SEO\\SEOServiceProvider"
-            ],
-            "aliases": {
-                "SEO": "Pharaonic\\Laravel\\SEO\\SEO"
-            }
+            ]
         }
     },
     "autoload": {
         "psr-4": {
             "Pharaonic\\Laravel\\SEO\\": "src"
         },
-        "files": ["src/helper.php"]
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pharaonic\\Laravel\\SEO\\Tests\\": "tests"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
