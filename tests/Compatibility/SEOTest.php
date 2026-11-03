@@ -41,20 +41,20 @@ class SEOTest extends TestCase
             <meta name="keywords" content="Pharaonic, Package, SEO">
             <meta name="author" content="Raggi">
             <meta name="robots" content="index, follow">
-            <meta name="copyrights" content="Pharaonic 2024">
+            <meta name="copyright" content="Pharaonic 2024">
             <link rel="next" href="https://pharaonic.io/next">
             <link rel="prev" href="https://pharaonic.io/prev">
             <link rel="alternate" hreflang="en" href="https://pharaonic.io/en">
             <link rel="alternate" hreflang="ar" href="https://pharaonic.io/ar">
             <link rel="canonical" href="https://pharaonic.io">
-            <meta name="og:url" content="http://localhost">
-            <meta name="og:locale" content="en">
-            <meta name="og:locale:alternate" content="en">
-            <meta name="og:locale:alternate" content="ar">
-            <meta name="og:type" content="website">
-            <meta name="og:title" content="Pharaonic Package">
-            <meta name="og:description" content="Pharaonic Package Description">
-            <meta name="og:image" content="https://pharaonic.io/logo.png">
+            <meta property="og:url" content="http://localhost">
+            <meta property="og:locale" content="en">
+            <meta property="og:locale:alternate" content="en">
+            <meta property="og:locale:alternate" content="ar">
+            <meta property="og:type" content="website">
+            <meta property="og:title" content="Pharaonic Package">
+            <meta property="og:description" content="Pharaonic Package Description">
+            <meta property="og:image" content="https://pharaonic.io/logo.png">
             <meta name="twitter:card" content="summary">
             <meta name="twitter:title" content="Pharaonic Package">
             <meta name="twitter:description" content="Pharaonic Package Description">
