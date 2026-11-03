@@ -4,62 +4,53 @@ namespace Pharaonic\Laravel\SEO\Classes;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
-use Pharaonic\Laravel\SEO\Classes\Elements\{
-    MultipleElement,
-    SingleElement,
-};
-use Pharaonic\Laravel\SEO\Elements\{
-    Alternates,
-    Author,
-    Canonical,
-    Charset,
-    Copyrights,
-    Description,
-    Images,
-    Keywords,
-    Next,
-    OpenGraph,
-    Previous,
-    Robots,
-    Title,
-    Twitter,
-    Viewport,
-};
+use Pharaonic\Laravel\SEO\Classes\Elements\MultipleElement;
+use Pharaonic\Laravel\SEO\Classes\Elements\SingleElement;
+use Pharaonic\Laravel\SEO\Elements\Alternates;
+use Pharaonic\Laravel\SEO\Elements\Author;
+use Pharaonic\Laravel\SEO\Elements\Canonical;
+use Pharaonic\Laravel\SEO\Elements\Charset;
+use Pharaonic\Laravel\SEO\Elements\Copyrights;
+use Pharaonic\Laravel\SEO\Elements\Description;
+use Pharaonic\Laravel\SEO\Elements\Images;
+use Pharaonic\Laravel\SEO\Elements\Keywords;
+use Pharaonic\Laravel\SEO\Elements\Next;
+use Pharaonic\Laravel\SEO\Elements\OpenGraph;
+use Pharaonic\Laravel\SEO\Elements\Previous;
+use Pharaonic\Laravel\SEO\Elements\Robots;
+use Pharaonic\Laravel\SEO\Elements\Title;
+use Pharaonic\Laravel\SEO\Elements\Twitter;
+use Pharaonic\Laravel\SEO\Elements\Viewport;
 
 /**
  * SEO Elements Manager.
- * 
+ *
  * @version 2.0.0
- * @package Pharaonic\Laravel\SEO
  */
 class Manager implements Renderable
 {
     /**
      * Default Values of SEO Tags.
-     *
-     * @var array
      */
     protected array $defaults;
 
     /**
      * SEO Elements List.
-     *
-     * @var array
      */
     protected array $elements = [
-        'charset'       => Charset::class,
-        'viewport'      => Viewport::class,
-        'title'         => Title::class,
-        'description'   => Description::class,
-        'keywords'      => Keywords::class,
-        'author'        => Author::class,
-        'robots'        => Robots::class,
-        'copyrights'    => Copyrights::class,
-        'next'          => Next::class,
-        'prev'          => Previous::class,
-        'alternates'    => Alternates::class,
-        'images'        => Images::class,
-        'canonical'     => Canonical::class,
+        'charset' => Charset::class,
+        'viewport' => Viewport::class,
+        'title' => Title::class,
+        'description' => Description::class,
+        'keywords' => Keywords::class,
+        'author' => Author::class,
+        'robots' => Robots::class,
+        'copyrights' => Copyrights::class,
+        'next' => Next::class,
+        'prev' => Previous::class,
+        'alternates' => Alternates::class,
+        'images' => Images::class,
+        'canonical' => Canonical::class,
     ];
 
     /**
@@ -74,13 +65,13 @@ class Manager implements Renderable
     /**
      * Get the element instance.
      *
-     * @param string $name
      * @return ElementContract
+     *
      * @throws \Exception
      */
     public function __get(string $name)
     {
-        if (!in_array($name, array_keys($this->elements))) {
+        if (! in_array($name, array_keys($this->elements))) {
             throw new \Exception("Element $name not found.");
         }
 
@@ -101,6 +92,7 @@ class Manager implements Renderable
      * Load Elements from Config.
      *
      * @return void
+     *
      * @throws \Exception
      */
     protected function loadElements()
@@ -108,7 +100,7 @@ class Manager implements Renderable
         $this->elements = array_merge($this->elements, config('Pharaonic.seo.elements', []));
 
         foreach ($this->elements as $name => $class) {
-            if (!is_subclass_of($class, SingleElement::class) && !is_subclass_of($class, MultipleElement::class)) {
+            if (! is_subclass_of($class, SingleElement::class) && ! is_subclass_of($class, MultipleElement::class)) {
                 throw new \Exception("Class $class must extends SingleElement or MultipleElement.");
             }
 
@@ -121,8 +113,6 @@ class Manager implements Renderable
 
     /**
      * Get Elements Directives.
-     *
-     * @return array
      */
     final public function getDirectives(): array
     {
@@ -137,13 +127,10 @@ class Manager implements Renderable
 
     /**
      * Set SEO Elements from Model.
-     *
-     * @param Model $model
-     * @return void
      */
     public function model(Model $model): void
     {
-        if (!($model instanceof \Pharaonic\Laravel\SEO\Contracts\SEOContract)) {
+        if (! ($model instanceof \Pharaonic\Laravel\SEO\Contracts\SEOContract)) {
             throw new \Exception('Model must implement SEOContract');
         }
 
@@ -151,7 +138,7 @@ class Manager implements Renderable
             if (isset($this->elements[$key])) {
                 if (in_array($key, ['open-graph', 'twitter'])) {
                     foreach ($value as $k => $v) {
-                        $this->elements[$key]->{'set' . ucfirst($k)}($v);
+                        $this->elements[$key]->{'set'.ucfirst($k)}($v);
                     }
                 } else {
                     $this->elements[$key]->set($value);
@@ -164,8 +151,6 @@ class Manager implements Renderable
 
     /**
      * Get the evaluated contents of the object.
-     *
-     * @return string
      */
     public function render(): string
     {
@@ -173,7 +158,7 @@ class Manager implements Renderable
 
         foreach ($this->elements as $element) {
             if ($result = $element->render()) {
-                $output .= trim($result, PHP_EOL) . PHP_EOL;
+                $output .= trim($result, PHP_EOL).PHP_EOL;
             }
         }
 

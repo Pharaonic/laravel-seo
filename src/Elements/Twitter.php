@@ -15,22 +15,16 @@ class Twitter implements Renderable
 
     /**
      * The Card Site.
-     *
-     * @var string|null
      */
     protected string|null $site;
 
     /**
      * The Card Creator.
-     *
-     * @var string|null
      */
     protected string|null $creator;
 
     /**
      * Create a new Twitter Card instance.
-     *
-     * @param array $defaults
      */
     public function __construct(array $defaults = [])
     {
@@ -41,8 +35,6 @@ class Twitter implements Renderable
 
     /**
      * Get the Card Type.
-     *
-     * @return string
      */
     public function getCard(): string
     {
@@ -51,9 +43,6 @@ class Twitter implements Renderable
 
     /**
      * Set the Card Type.
-     *
-     * @param string $card
-     * @return static
      */
     public function setCard(string $card): static
     {
@@ -64,8 +53,6 @@ class Twitter implements Renderable
 
     /**
      * Get the Card Site.
-     *
-     * @return string
      */
     public function getSite(): string
     {
@@ -74,21 +61,16 @@ class Twitter implements Renderable
 
     /**
      * Set the Card Site.
-     *
-     * @param string $site
-     * @return static
      */
     public function setSite(string $site): static
     {
-        $this->site = '@' . $site;
+        $this->site = '@'.$site;
 
         return $this;
     }
 
     /**
      * Get the Card Creator.
-     *
-     * @return string
      */
     public function getCreator(): string
     {
@@ -97,13 +79,10 @@ class Twitter implements Renderable
 
     /**
      * Set the Card Creator.
-     *
-     * @param string $creator
-     * @return static
      */
     public function setCreator(string $creator): static
     {
-        $this->creator = '@' . $creator;
+        $this->creator = '@'.$creator;
 
         return $this;
     }
@@ -118,31 +97,31 @@ class Twitter implements Renderable
         $output = '';
 
         if ($this->card) {
-            $output .= '<meta name="twitter:card" content="' . $this->card . '">' . PHP_EOL;
+            $output .= '<meta name="twitter:card" content="'.$this->card.'">'.PHP_EOL;
         }
 
         if ($this->site) {
-            $output .= '<meta name="twitter:site" content="' . $this->site . '">' . PHP_EOL;
+            $output .= '<meta name="twitter:site" content="'.$this->site.'">'.PHP_EOL;
         }
 
         if ($this->creator) {
-            $output .= '<meta name="twitter:creator" content="' . $this->creator . '">' . PHP_EOL;
+            $output .= '<meta name="twitter:creator" content="'.$this->creator.'">'.PHP_EOL;
         }
 
         if ($title = seo()->title?->get()) {
-            $output .= '<meta name="twitter:title" content="' . $title . '">' . PHP_EOL;
+            $output .= '<meta name="twitter:title" content="'.$title.'">'.PHP_EOL;
         }
 
         if ($description = seo()->description?->get()) {
-            $output .= '<meta name="twitter:description" content="' . $description . '">' . PHP_EOL;
+            $output .= '<meta name="twitter:description" content="'.$description.'">'.PHP_EOL;
         }
 
         if ($images = seo()->images?->get()) {
             if (count($images) == 1) {
-                $output .= '<meta name="twitter:image" content="' . $images[0] . '">' . PHP_EOL;
+                $output .= '<meta name="twitter:image" content="'.$images[0].'">'.PHP_EOL;
             } else {
                 foreach ($images as $index => $image) {
-                    $output .= '<meta name="twitter:image' . $index . '" content="' . $image . '">' . PHP_EOL;
+                    $output .= '<meta name="twitter:image'.$index.'" content="'.$image.'">'.PHP_EOL;
                 }
             }
         }
@@ -152,15 +131,13 @@ class Twitter implements Renderable
 
     /**
      * Get the element directives.
-     *
-     * @return array
      */
     public function getDirectives(): array
     {
         return [
-            'twitterCard' => fn ($data) => '<?php seo()->twitter->setCard(' . $data . '); ?>',
-            'twitterSite' => fn ($data) => '<?php seo()->twitter->setSite(' . $data . '); ?>',
-            'twitterCreator' => fn ($data) => '<?php seo()->twitter->setCreator(' . $data . '); ?>',
+            'twitterCard' => fn ($data) => '<?php seo()->twitter->setCard('.$data.'); ?>',
+            'twitterSite' => fn ($data) => '<?php seo()->twitter->setSite('.$data.'); ?>',
+            'twitterCreator' => fn ($data) => '<?php seo()->twitter->setCreator('.$data.'); ?>',
         ];
     }
 }

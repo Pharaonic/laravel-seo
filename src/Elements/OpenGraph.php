@@ -16,15 +16,11 @@ class OpenGraph implements Renderable
 
     /**
      * The Card Site Name.
-     *
-     * @var string|null
      */
     protected string|null $siteName;
 
     /**
      * Create a new Open-Graph Card instance.
-     *
-     * @param array $defaults
      */
     public function __construct(array $defaults = [])
     {
@@ -34,8 +30,6 @@ class OpenGraph implements Renderable
 
     /**
      * Get the Card Type.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -44,9 +38,6 @@ class OpenGraph implements Renderable
 
     /**
      * Set the Card Type.
-     *
-     * @param string $type
-     * @return static
      */
     public function setType(string $type): static
     {
@@ -57,8 +48,6 @@ class OpenGraph implements Renderable
 
     /**
      * Get the Card Site Name.
-     *
-     * @return string
      */
     public function getSiteName(): string
     {
@@ -68,8 +57,7 @@ class OpenGraph implements Renderable
     /**
      * Set the Card Site Name.
      *
-     * @param string $site_name
-     * @return static
+     * @param  string  $site_name
      */
     public function setSiteName(string $siteName): static
     {
@@ -85,34 +73,34 @@ class OpenGraph implements Renderable
      */
     public function render()
     {
-        $output = '<meta name="og:url" content="' . URL::current() . '">' . PHP_EOL .
-            '<meta name="og:locale" content="' . app()->getLocale() . '">' . PHP_EOL;
+        $output = '<meta name="og:url" content="'.URL::current().'">'.PHP_EOL.
+            '<meta name="og:locale" content="'.app()->getLocale().'">'.PHP_EOL;
 
         if ($alternates = seo()->alternates?->get()) {
             foreach ($alternates as $alternate) {
-                $output .= '<meta name="og:locale:alternate" content="' . str_replace('.', '_', $alternate['lang']) . '">' . PHP_EOL;
+                $output .= '<meta name="og:locale:alternate" content="'.str_replace('.', '_', $alternate['lang']).'">'.PHP_EOL;
             }
         }
 
         if ($this->type) {
-            $output .= '<meta name="og:type" content="' . $this->type . '">' . PHP_EOL;
+            $output .= '<meta name="og:type" content="'.$this->type.'">'.PHP_EOL;
         }
 
         if ($this->siteName) {
-            $output .= '<meta name="og:site_name" content="' . $this->siteName . '">' . PHP_EOL;
+            $output .= '<meta name="og:site_name" content="'.$this->siteName.'">'.PHP_EOL;
         }
 
         if ($title = seo()->title?->get()) {
-            $output .= '<meta name="og:title" content="' . $title . '">' . PHP_EOL;
+            $output .= '<meta name="og:title" content="'.$title.'">'.PHP_EOL;
         }
 
         if ($description = seo()->description?->get()) {
-            $output .= '<meta name="og:description" content="' . $description . '">' . PHP_EOL;
+            $output .= '<meta name="og:description" content="'.$description.'">'.PHP_EOL;
         }
 
         if ($images = seo()->images?->get()) {
             foreach ($images as $image) {
-                $output .= '<meta name="og:image" content="' . $image . '">' . PHP_EOL;
+                $output .= '<meta name="og:image" content="'.$image.'">'.PHP_EOL;
             }
         }
 
@@ -121,14 +109,12 @@ class OpenGraph implements Renderable
 
     /**
      * Get the element directives.
-     *
-     * @return array
      */
     public function getDirectives(): array
     {
         return [
-            'openGraphType' => fn ($data) => '<?php seo()->openGraph->setType(' . $data . '); ?>',
-            'openGraphSiteName' => fn ($data) => '<?php seo()->openGraph->setSiteName(' . $data . '); ?>',
+            'openGraphType' => fn ($data) => '<?php seo()->openGraph->setType('.$data.'); ?>',
+            'openGraphSiteName' => fn ($data) => '<?php seo()->openGraph->setSiteName('.$data.'); ?>',
         ];
     }
 }

@@ -26,9 +26,9 @@ class SEOServiceProvider extends ServiceProvider
     public function boot()
     {
         // Config
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'Pharaonic.seo');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'Pharaonic.seo');
         $this->publishes([
-            __DIR__ . '/../config/config.php' => config_path('Pharaonic/seo.php'),
+            __DIR__.'/../config/config.php' => config_path('Pharaonic/seo.php'),
         ], ['config', 'seo', 'pharaonic']);
 
         // Blade Directives

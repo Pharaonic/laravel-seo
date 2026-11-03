@@ -3,7 +3,6 @@
 namespace Pharaonic\Laravel\SEO\Tests;
 
 use Pharaonic\Laravel\SEO\Tests\Models\Article;
-use Pharaonic\Laravel\SEO\Tests\TestCase;
 
 class SEOTest extends TestCase
 {
@@ -34,7 +33,7 @@ class SEOTest extends TestCase
 
         $this->assertSame(
             seo()->render(),
-            <<<HTML
+            <<<'HTML'
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>Pharaonic Package</title>
@@ -78,6 +77,5 @@ class SEOTest extends TestCase
         $this->assertSame(seo()->description->get(), $article->description);
         $this->assertSame(seo()->keywords->get(), explode(', ', $article->keywords));
         $this->assertSame(seo()->twitter->getCard(), 'app');
-
     }
 }

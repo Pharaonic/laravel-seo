@@ -9,16 +9,11 @@ abstract class BaseElement implements Renderable
 {
     /**
      * The Element Name.
-     *
-     * @var string
      */
     protected string $name;
 
     /**
      * Create a new Element instance.
-     *
-     * @param string $name
-     * @param string|array|null $content
      */
     final public function __construct(string $name, string|array|null $content)
     {
@@ -31,8 +26,6 @@ abstract class BaseElement implements Renderable
 
     /**
      * Get the element name.
-     * 
-     * @return string
      */
     final public function getName(): string
     {
@@ -41,8 +34,6 @@ abstract class BaseElement implements Renderable
 
     /**
      * Clear the element content.
-     *
-     * @return static
      */
     final public function clear(): static
     {
@@ -53,13 +44,11 @@ abstract class BaseElement implements Renderable
 
     /**
      * Get the element directives.
-     *
-     * @return array
      */
     public function getDirectives(): array
     {
         return [
-            Str::camel($this->name) => fn ($data) => '<?php seo()->' . $this->name . '->set(' . $data . '); ?>'
+            Str::camel($this->name) => fn ($data) => '<?php seo()->'.$this->name.'->set('.$data.'); ?>',
         ];
     }
 }

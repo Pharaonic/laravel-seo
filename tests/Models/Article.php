@@ -16,8 +16,6 @@ class Article extends Model implements SEOContract
 
     /**
      * Get SEO Data
-     *
-     * @return array
      */
     public function seo(): array
     {
@@ -26,8 +24,8 @@ class Article extends Model implements SEOContract
             'description' => $this->description,
             'keywords' => $this->keywords,
             'twitter' => [
-                'card' => 'app'
-            ]
+                'card' => 'app',
+            ],
         ];
     }
 }

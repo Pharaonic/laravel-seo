@@ -8,10 +8,6 @@ class Alternates extends MultipleElement
 {
     /**
      * Add a new Alternate.
-     *
-     * @param string $lang
-     * @param string $url
-     * @return static
      */
     public function add(string $lang, string $url): static
     {
@@ -37,7 +33,7 @@ class Alternates extends MultipleElement
         return implode(
             PHP_EOL,
             array_map(
-                fn ($content) => '<link rel="alternate" hreflang="' . $content['lang'] . '" href="' . $content['url'] . '">',
+                fn ($content) => '<link rel="alternate" hreflang="'.$content['lang'].'" href="'.$content['url'].'">',
                 $this->content
             )
         );

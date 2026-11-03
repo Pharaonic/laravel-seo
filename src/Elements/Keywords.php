@@ -8,9 +8,6 @@ class Keywords extends MultipleElement
 {
     /**
      * Set the element value.
-     *
-     * @param array|string $value
-     * @return static
      */
     public function set(array|string $value): static
     {
@@ -21,9 +18,6 @@ class Keywords extends MultipleElement
 
     /**
      * Add a new Keyword.
-     *
-     * @param string $keyword
-     * @return static
      */
     public function add(string $keyword): static
     {
@@ -43,6 +37,6 @@ class Keywords extends MultipleElement
             return '';
         }
 
-        return '<meta name="keywords" content="' . implode(', ', $this->content) . '">';
+        return '<meta name="keywords" content="'.implode(', ', $this->content).'">';
     }
 }

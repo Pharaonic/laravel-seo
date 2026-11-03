@@ -9,15 +9,11 @@ abstract class MultipleElement extends BaseElement
 {
     /**
      * The Element Content.
-     *
-     * @var array|null
      */
     protected array|null $content = null;
 
     /**
      * Get the element value.
-     *
-     * @return array|null
      */
     public function get(): array|null
     {
@@ -26,9 +22,6 @@ abstract class MultipleElement extends BaseElement
 
     /**
      * Set the element value.
-     *
-     * @param array|string $value
-     * @return static
      */
     public function set(array|string $value): static
     {
@@ -39,9 +32,6 @@ abstract class MultipleElement extends BaseElement
 
     /**
      * Remove a value from the element.
-     * 
-     * @param int $index
-     * @return static
      */
     public function remove(int $index): static
     {
@@ -54,16 +44,14 @@ abstract class MultipleElement extends BaseElement
 
     /**
      * Get the element directives.
-     *
-     * @return array
      */
     public function getDirectives(): array
     {
         $name = Str::camel($this->name);
 
         return [
-            $name => fn ($data) => '<?php seo()->' . $this->name . '->set(' . $data . '); ?>',
-            Str::singular($name) => fn ($data) => '<?php seo()->' . $this->name . '->add(' . $data . '); ?>'
+            $name => fn ($data) => '<?php seo()->'.$this->name.'->set('.$data.'); ?>',
+            Str::singular($name) => fn ($data) => '<?php seo()->'.$this->name.'->add('.$data.'); ?>',
         ];
     }
 }

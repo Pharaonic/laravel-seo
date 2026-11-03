@@ -8,15 +8,11 @@ abstract class SingleElement extends BaseElement
 {
     /**
      * The Element Content.
-     *
-     * @var string|null
      */
     protected string|null $content = null;
 
     /**
      * Get the element value.
-     *
-     * @return string|null
      */
     public function get(): string|null
     {
@@ -25,9 +21,6 @@ abstract class SingleElement extends BaseElement
 
     /**
      * Set the element value.
-     *
-     * @param string $value
-     * @return static
      */
     public function set(string $value): static
     {
@@ -43,10 +36,10 @@ abstract class SingleElement extends BaseElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<meta name="' . $this->name . '" content="' . $this->content . '">';
+        return '<meta name="'.$this->name.'" content="'.$this->content.'">';
     }
 }
