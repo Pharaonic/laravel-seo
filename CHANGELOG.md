@@ -9,14 +9,14 @@ All notable changes to this project are documented here.
 - Laravel 9 on PHP 8.0, 8.1 or 8.2.
 - The same API and output as 8.0.0, including the deprecated 2.x names.
 
-## 8.0.0 - Unreleased
+## 8.0.0 - 2026-11-03
 
 ### Compatibility
 
 - Laravel 8.75+ on PHP 8.0 or 8.1.
 - The same API and output as 7.0.0, including the deprecated 2.x names.
 
-## 7.0.0 - Unreleased
+## 7.0.0 - 2026-11-03
 
 ### Compatibility
 
@@ -24,7 +24,7 @@ All notable changes to this project are documented here.
 - The same API and output as 6.0.0, including the deprecated 2.x names.
 - The tests run on Pest.
 
-## 6.0.0 - Unreleased
+## 6.0.0 - 2026-11-03
 
 The first release of the Laravel 6 line. It continues the 2.x code with the fixes and deprecations below.
 
