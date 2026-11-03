@@ -2,8 +2,11 @@
 
 namespace Pharaonic\Laravel\SEO;
 
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 use Pharaonic\Laravel\SEO\Classes\Manager;
 
 class SEOServiceProvider extends ServiceProvider
@@ -15,6 +18,8 @@ class SEOServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/seo.php', 'pharaonic.seo');
+
         $this->app->singleton('pharaonic-seo', fn () => new Manager);
     }
 
@@ -25,16 +30,22 @@ class SEOServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Config
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'Pharaonic.seo');
-        $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('Pharaonic/seo.php'),
-        ], ['config', 'seo', 'pharaonic']);
-
-        // Blade Directives
-        Blade::directive('seo', fn () => '<?php echo seo()->render(); ?>');
-        foreach (seo()->getDirectives() as $name => $directive) {
-            Blade::directive($name, $directive);
+        if ($this->app->runningInConsole()) {
+            // `config` and `seo` are the deprecated 2.x tags.
+            $this->publishes([
+                __DIR__.'/../config/seo.php' => $this->app->configPath('pharaonic/seo.php'),
+            ], ['pharaonic', 'laravel-seo', 'pharaonic-config', 'seo-config', 'config', 'seo']);
         }
+
+        // The directives come from a manager of their own, so booting never resolves `pharaonic-seo`:
+        // an Octane worker boots once and would share those tags with every request.
+        $this->callAfterResolving('blade.compiler', function (BladeCompiler $blade) {
+            (new BladeDirectives)->register($blade, new Manager);
+        });
+
+        // A queue worker runs every job in one application, so each job starts with fresh tags.
+        $this->callAfterResolving('events', function (Dispatcher $events) {
+            $events->listen(JobProcessing::class, fn () => Container::getInstance()->forgetInstance('pharaonic-seo'));
+        });
     }
 }

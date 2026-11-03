@@ -5,6 +5,9 @@ namespace Pharaonic\Laravel\SEO\Classes;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 
+/**
+ * @method static set(string|array<mixed> $value)
+ */
 abstract class BaseElement implements Renderable
 {
     /**
@@ -14,13 +17,15 @@ abstract class BaseElement implements Renderable
 
     /**
      * Create a new Element instance.
+     *
+     * @param  string|array<mixed>|null  $content
      */
     final public function __construct(string $name, string|array|null $content)
     {
         $this->name = $name;
 
         if ($content) {
-            call_user_func_array([$this, 'set'], [$content]);
+            $this->set($content);
         }
     }
 
@@ -33,22 +38,14 @@ abstract class BaseElement implements Renderable
     }
 
     /**
-     * Clear the element content.
-     */
-    final public function clear(): static
-    {
-        $this->{'content'} = null;
-
-        return $this;
-    }
-
-    /**
      * Get the element directives.
+     *
+     * @return array<string, \Closure(?string): string>
      */
     public function getDirectives(): array
     {
         return [
-            Str::camel($this->name) => fn ($data) => '<?php seo()->'.$this->name.'->set('.$data.'); ?>',
+            Str::camel($this->name) => fn (?string $data) => '<?php seo()->'.$this->name.'->set('.$data.'); ?>',
         ];
     }
 }

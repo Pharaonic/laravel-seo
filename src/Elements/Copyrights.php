@@ -2,9 +2,10 @@
 
 namespace Pharaonic\Laravel\SEO\Elements;
 
-use Pharaonic\Laravel\SEO\Classes\Elements\SingleElement;
-
-class Copyrights extends SingleElement
+/**
+ * @deprecated Use Copyright. Removed in the first line that supports PHP 8.6.
+ */
+class Copyrights extends Copyright
 {
     //
 }

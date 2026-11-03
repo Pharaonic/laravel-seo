@@ -2,14 +2,13 @@
 
 return [
     /**
-     * Default values of SEO Tages.
-     * A list of default values for SEO Tags.
+     * Default values of the SEO tags.
      */
     'default' => [
         'charset' => 'UTF-8',
         // 'viewport' => 'width=device-width, initial-scale=1.0',
 
-        'open-graph' => [
+        'open_graph' => [
             'type' => 'website',
             // 'site_name' => 'Site Name',
         ],
@@ -22,10 +21,10 @@ return [
     ],
 
     /**
-     * SEO Elements.
-     * A list of SEO Elements that you can use in your application.
+     * SEO elements.
+     * Extra or replacement elements, each extending SingleElement or MultipleElement.
      */
     'elements' => [
-        // 'charset' => \Pharaonic\Laravel\SEO\Elements\Charset2::class,
+        // 'charset' => \App\SEO\Charset::class,
     ],
 ];

@@ -20,6 +20,16 @@ abstract class SingleElement extends BaseElement
     }
 
     /**
+     * Clear the element content.
+     */
+    final public function clear(): static
+    {
+        $this->content = null;
+
+        return $this;
+    }
+
+    /**
      * Set the element value.
      */
     public function set(string $value): static
@@ -40,6 +50,6 @@ abstract class SingleElement extends BaseElement
             return '';
         }
 
-        return '<meta name="'.$this->name.'" content="'.$this->content.'">';
+        return '<meta name="'.e($this->name).'" content="'.e($this->content).'">';
     }
 }
