@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 7.0.0 - Unreleased
+
+### Compatibility
+
+- Laravel 7.30+ on PHP 8.0.
+- The same API and output as 6.0.0, including the deprecated 2.x names.
+- The tests run on Pest.
+
 ## 6.0.0 - Unreleased
 
 The first release of the Laravel 6 line. It continues the 2.x code with the fixes and deprecations below.
