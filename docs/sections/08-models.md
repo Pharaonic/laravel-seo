@@ -2,7 +2,7 @@
 
 A model that implements `SEOContract` returns its SEO data from `seo()`. The keys are element names, plus `open_graph` and `twitter` for the cards.
 
-```php title="app/Models/Post.php"
+```php title="app/Post.php"
 use Illuminate\Database\Eloquent\Model;
 use Pharaonic\Laravel\SEO\Contracts\SEOContract;
 

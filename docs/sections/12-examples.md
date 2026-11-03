@@ -26,7 +26,7 @@ Set what every page shares once, so pages only set what's their own.
 
 - ===Model
 
-  ```php title="app/Models/Post.php"
+  ```php title="app/Post.php"
   class Post extends Model implements SEOContract
   {
       public function seo(): array
