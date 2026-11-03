@@ -4,7 +4,7 @@ The 2.x API keeps working: every method, element, configuration key, publish tag
 
 ### Requirements
 
-The package now depends on `illuminate/*` components instead of `laravel/framework`, and has one line per Laravel version. Install the line of your Laravel version; this one requires PHP 8.0 and Laravel 7.30+.
+The package now depends on `illuminate/*` components instead of `laravel/framework`, and has one line per Laravel version. Install the line of your Laravel version; this one requires PHP 8.0 or 8.1 and Laravel 8.75+.
 
 ### Renamed APIs
 
