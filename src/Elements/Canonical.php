@@ -17,6 +17,6 @@ class Canonical extends SingleElement
             return '';
         }
 
-        return '<link rel="canonical" href="'.$this->content.'">';
+        return '<link rel="canonical" href="'.e($this->content).'">';
     }
 }

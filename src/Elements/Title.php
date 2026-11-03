@@ -17,6 +17,6 @@ class Title extends SingleElement
             return '';
         }
 
-        return '<title>'.$this->content.'</title>';
+        return '<title>'.e($this->content).'</title>';
     }
 }

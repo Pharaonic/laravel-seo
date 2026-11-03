@@ -17,6 +17,6 @@ class Charset extends SingleElement
             return '';
         }
 
-        return '<meta charset="'.$this->content.'">';
+        return '<meta charset="'.e($this->content).'">';
     }
 }

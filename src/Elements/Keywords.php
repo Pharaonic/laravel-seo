@@ -7,16 +7,6 @@ use Pharaonic\Laravel\SEO\Classes\Elements\MultipleElement;
 class Keywords extends MultipleElement
 {
     /**
-     * Set the element value.
-     */
-    public function set(array|string $value): static
-    {
-        $this->content = is_string($value) ? explode(', ', $value) : $value;
-
-        return $this;
-    }
-
-    /**
      * Add a new Keyword.
      */
     public function add(string $keyword): static
@@ -37,6 +27,6 @@ class Keywords extends MultipleElement
             return '';
         }
 
-        return '<meta name="keywords" content="'.implode(', ', $this->content).'">';
+        return '<meta name="keywords" content="'.e(implode(', ', array_map('strval', array_filter($this->content, 'is_scalar')))).'">';
     }
 }

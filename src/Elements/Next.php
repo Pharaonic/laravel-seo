@@ -17,6 +17,6 @@ class Next extends SingleElement
             return '';
         }
 
-        return '<link rel="next" href="'.$this->content.'">';
+        return '<link rel="next" href="'.e($this->content).'">';
     }
 }

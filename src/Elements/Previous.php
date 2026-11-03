@@ -17,6 +17,6 @@ class Previous extends SingleElement
             return '';
         }
 
-        return '<link rel="prev" href="'.$this->content.'">';
+        return '<link rel="prev" href="'.e($this->content).'">';
     }
 }
