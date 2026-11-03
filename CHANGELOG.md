@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 10.0.0 - Unreleased
+
+### Compatibility
+
+- Laravel 10 on PHP 8.1, 8.2 or 8.3. PHP 8.0 is no longer supported on this line.
+- The same API and output as 9.0.0, including the deprecated 2.x names.
+
 ## 9.0.0 - Unreleased
 
 ### Compatibility
