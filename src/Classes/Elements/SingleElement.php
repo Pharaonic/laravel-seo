@@ -9,12 +9,12 @@ abstract class SingleElement extends BaseElement
     /**
      * The Element Content.
      */
-    protected string|null $content = null;
+    protected ?string $content = null;
 
     /**
      * Get the element value.
      */
-    public function get(): string|null
+    public function get(): ?string
     {
         return $this->content;
     }

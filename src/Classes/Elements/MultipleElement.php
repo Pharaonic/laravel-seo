@@ -12,14 +12,14 @@ abstract class MultipleElement extends BaseElement
      *
      * @var array<mixed>|null
      */
-    protected array|null $content = null;
+    protected ?array $content = null;
 
     /**
      * Get the element value.
      *
      * @return array<mixed>|null
      */
-    public function get(): array|null
+    public function get(): ?array
     {
         return $this->content;
     }

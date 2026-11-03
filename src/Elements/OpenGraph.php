@@ -12,12 +12,12 @@ class OpenGraph implements Renderable
     /**
      * The Card type.
      */
-    protected string|null $type;
+    protected ?string $type;
 
     /**
      * The Card Site Name.
      */
-    protected string|null $siteName;
+    protected ?string $siteName;
 
     /**
      * Create a new Open-Graph Card instance.

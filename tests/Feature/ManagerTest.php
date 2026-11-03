@@ -5,9 +5,7 @@ use Pharaonic\Laravel\SEO\Classes\Elements\SingleElement;
 use Pharaonic\Laravel\SEO\Classes\Manager;
 use Pharaonic\Laravel\SEO\Tests\Models\Article;
 
-class ThemeColor extends SingleElement
-{
-}
+class ThemeColor extends SingleElement {}
 
 test('it reads the defaults', function () {
     config()->set('pharaonic.seo.default', [
@@ -71,9 +69,7 @@ test('it casts scalar model values to strings', function () {
 });
 
 test('it rejects a model without the contract', function () {
-    seo()->model(new class extends Model
-    {
-    });
+    seo()->model(new class extends Model {});
 })->throws(InvalidArgumentException::class, 'Model must implement SEOContract');
 
 test('it rejects an unknown model key', function () {

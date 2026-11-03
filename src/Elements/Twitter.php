@@ -8,20 +8,18 @@ class Twitter implements Renderable
 {
     /**
      * The Card Type.
-     *
-     * @var string
      */
-    protected string|null $card;
+    protected ?string $card;
 
     /**
      * The Card Site.
      */
-    protected string|null $site;
+    protected ?string $site;
 
     /**
      * The Card Creator.
      */
-    protected string|null $creator;
+    protected ?string $creator;
 
     /**
      * Create a new Twitter Card instance.
