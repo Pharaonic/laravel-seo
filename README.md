@@ -14,8 +14,6 @@
 <h3 align="center">SEO meta tags, Open Graph and Twitter cards for Laravel.</h3>
 <br>
 
-SEO meta tags for Laravel: title, description, keywords, canonical and alternate links, Open Graph and Twitter cards, set from code, Eloquent models, or Blade directives.
-
 ## Installation
 
 ```bash
@@ -44,11 +42,11 @@ seo()->images->add('https://pharaonic.dev/cover.png');
 
 ## Documentation
 
-Full documentation: https://pharaonic.dev/packages/laravel/seo
+Full documentation: [Laravel SEO Documentation](https://pharaonic.dev/packages/laravel/seo).
 
 ## Support & Security
 
-See [SUPPORT.md](SUPPORT.md) and [SECURITY.md](SECURITY.md).
+See [SUPPORT.md](SUPPORT.md) and [SECURITY.md](SECURITY.md). Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
