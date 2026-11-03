@@ -8,9 +8,6 @@ class Images extends MultipleElement
 {
     /**
      * Add a new image.
-     *
-     * @param string $url
-     * @return static
      */
     public function add(string $url): static
     {

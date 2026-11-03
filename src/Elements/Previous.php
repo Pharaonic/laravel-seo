@@ -13,10 +13,10 @@ class Previous extends SingleElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<link rel="prev" href="' . $this->content . '">';
+        return '<link rel="prev" href="'.e($this->content).'">';
     }
 }

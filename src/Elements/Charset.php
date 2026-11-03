@@ -13,10 +13,10 @@ class Charset extends SingleElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<meta charset="' . $this->content . '">';
+        return '<meta charset="'.e($this->content).'">';
     }
 }

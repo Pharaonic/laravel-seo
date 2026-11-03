@@ -1,13 +1,20 @@
 <?php
 
-if (!function_exists('seo')) {
+use Illuminate\Container\Container;
+use Pharaonic\Laravel\SEO\Classes\Manager;
+
+if (! function_exists('seo')) {
     /**
      * Get the SEO instance.
-     *
-     * @return Pharaonic\Laravel\SEO\Classes\Manager
      */
-    function seo()
+    function seo(): Manager
     {
-        return app('pharaonic-seo');
+        $seo = Container::getInstance()->make('pharaonic-seo');
+
+        if (! $seo instanceof Manager) {
+            throw new UnexpectedValueException('pharaonic-seo must resolve to '.Manager::class.'.');
+        }
+
+        return $seo;
     }
 }

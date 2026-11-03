@@ -13,10 +13,10 @@ class Canonical extends SingleElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<link rel="canonical" href="' . $this->content . '">';
+        return '<link rel="canonical" href="'.e($this->content).'">';
     }
 }

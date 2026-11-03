@@ -13,10 +13,10 @@ class Title extends SingleElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
-        
-        return '<title>' . $this->content . '</title>';
+
+        return '<title>'.e($this->content).'</title>';
     }
 }

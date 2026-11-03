@@ -5,9 +5,9 @@ namespace Pharaonic\Laravel\SEO\Contracts;
 interface SEOContract
 {
     /**
-     * Get SEO Data
+     * Get SEO Data: element name => value, `open_graph` and `twitter` => attribute => value.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function seo(): array;
 }

@@ -13,10 +13,10 @@ class Next extends SingleElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<link rel="next" href="' . $this->content . '">';
+        return '<link rel="next" href="'.e($this->content).'">';
     }
 }

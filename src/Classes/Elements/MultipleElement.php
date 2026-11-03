@@ -10,25 +10,34 @@ abstract class MultipleElement extends BaseElement
     /**
      * The Element Content.
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
-    protected array|null $content = null;
+    protected ?array $content = null;
 
     /**
      * Get the element value.
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
-    public function get(): array|null
+    public function get(): ?array
     {
         return $this->content;
     }
 
     /**
+     * Clear the element content.
+     */
+    final public function clear(): static
+    {
+        $this->content = null;
+
+        return $this;
+    }
+
+    /**
      * Set the element value.
      *
-     * @param array|string $value
-     * @return static
+     * @param  array<mixed>|string  $value
      */
     public function set(array|string $value): static
     {
@@ -39,14 +48,12 @@ abstract class MultipleElement extends BaseElement
 
     /**
      * Remove a value from the element.
-     * 
-     * @param int $index
-     * @return static
      */
     public function remove(int $index): static
     {
         if (isset($this->content[$index])) {
             unset($this->content[$index]);
+            $this->content = array_values($this->content);
         }
 
         return $this;
@@ -55,15 +62,15 @@ abstract class MultipleElement extends BaseElement
     /**
      * Get the element directives.
      *
-     * @return array
+     * @return array<string, \Closure(?string): string>
      */
     public function getDirectives(): array
     {
         $name = Str::camel($this->name);
 
         return [
-            $name => fn ($data) => '<?php seo()->' . $this->name . '->set(' . $data . '); ?>',
-            Str::singular($name) => fn ($data) => '<?php seo()->' . $this->name . '->add(' . $data . '); ?>'
+            $name => fn (?string $data) => '<?php seo()->'.$this->name.'->set('.$data.'); ?>',
+            Str::singular($name) => fn (?string $data) => '<?php seo()->'.$this->name.'->add('.$data.'); ?>',
         ];
     }
 }

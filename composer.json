@@ -1,13 +1,17 @@
 {
     "name": "pharaonic/laravel-seo",
-    "description": "SEO generates meta tags with quick and easy functions & blade directives.",
+    "description": "SEO meta tags for Laravel: title, description, Open Graph, Twitter cards and more, set from code, models or Blade directives.",
     "keywords": [
-        "laravel seo",
-        "php seo",
-        "meta tags",
+        "php",
         "laravel",
-        "php"
+        "seo",
+        "meta tags",
+        "open graph",
+        "twitter cards",
+        "blade",
+        "pharaonic"
     ],
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -15,15 +19,38 @@
             "email": "raggigroup@gmail.com"
         }
     ],
+    "support": {
+        "docs": "https://pharaonic.dev/packages/laravel/seo",
+        "issues": "https://github.com/Pharaonic/laravel-seo/issues",
+        "source": "https://github.com/Pharaonic/laravel-seo"
+    },
     "require": {
-        "php": ">=8.0",
-        "laravel/framework": ">=9.0"
+        "php": ">=8.3 <8.6",
+        "illuminate/container": "^13.0",
+        "illuminate/contracts": "^13.0",
+        "illuminate/database": "^13.0",
+        "illuminate/support": "^13.0",
+        "illuminate/view": "^13.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0"
+        "laravel/pint": "^1.20",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.0",
+        "phpstan/phpstan": "^2.1.33",
+        "phpunit/phpunit": "^12.5.8"
     },
-    "config": {
-        "sort-packages": true
+    "autoload": {
+        "psr-4": {
+            "Pharaonic\\Laravel\\SEO\\": "src/"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pharaonic\\Laravel\\SEO\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
@@ -32,19 +59,33 @@
             ]
         }
     },
-    "autoload": {
-        "psr-4": {
-            "Pharaonic\\Laravel\\SEO\\": "src"
-        },
-        "files": [
-            "src/helper.php"
+    "scripts": {
+        "test": "@php vendor/bin/pest",
+        "analyse": "@php vendor/bin/phpstan analyse --memory-limit=1G",
+        "format": "@php vendor/bin/pint",
+        "format:check": "@php vendor/bin/pint --test",
+        "security": "@composer audit",
+        "check": [
+            "@composer validate --strict",
+            "@format:check",
+            "@analyse",
+            "@test",
+            "@security"
         ]
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Pharaonic\\Laravel\\SEO\\Tests\\": "tests"
-        }
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "audit": {
+            "abandoned": "report"
+        },
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        },
+        "sort-packages": true
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

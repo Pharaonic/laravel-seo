@@ -6,5 +6,5 @@ use Pharaonic\Laravel\SEO\Classes\Elements\SingleElement;
 
 class Viewport extends SingleElement
 {
-    // 
+    //
 }

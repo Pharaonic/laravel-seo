@@ -8,26 +8,29 @@ abstract class SingleElement extends BaseElement
 {
     /**
      * The Element Content.
-     *
-     * @var string|null
      */
-    protected string|null $content = null;
+    protected ?string $content = null;
 
     /**
      * Get the element value.
-     *
-     * @return string|null
      */
-    public function get(): string|null
+    public function get(): ?string
     {
         return $this->content;
     }
 
     /**
+     * Clear the element content.
+     */
+    final public function clear(): static
+    {
+        $this->content = null;
+
+        return $this;
+    }
+
+    /**
      * Set the element value.
-     *
-     * @param string $value
-     * @return static
      */
     public function set(string $value): static
     {
@@ -43,10 +46,10 @@ abstract class SingleElement extends BaseElement
      */
     public function render()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return '';
         }
 
-        return '<meta name="' . $this->name . '" content="' . $this->content . '">';
+        return '<meta name="'.e($this->name).'" content="'.e($this->content).'">';
     }
 }

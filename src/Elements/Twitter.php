@@ -8,52 +8,41 @@ class Twitter implements Renderable
 {
     /**
      * The Card Type.
-     *
-     * @var string
      */
-    protected string|null $card;
+    protected ?string $card;
 
     /**
      * The Card Site.
-     *
-     * @var string|null
      */
-    protected string|null $site;
+    protected ?string $site;
 
     /**
      * The Card Creator.
-     *
-     * @var string|null
      */
-    protected string|null $creator;
+    protected ?string $creator;
 
     /**
      * Create a new Twitter Card instance.
      *
-     * @param array $defaults
+     * @param  array<mixed>  $defaults
      */
     public function __construct(array $defaults = [])
     {
-        $this->card = $defaults['card'] ?? null;
-        $this->site = $defaults['site'] ?? null;
-        $this->creator = $defaults['creator'] ?? null;
+        $this->card = is_string($defaults['card'] ?? null) ? $defaults['card'] : null;
+        $this->site = is_string($defaults['site'] ?? null) ? $this->handle($defaults['site']) : null;
+        $this->creator = is_string($defaults['creator'] ?? null) ? $this->handle($defaults['creator']) : null;
     }
 
     /**
      * Get the Card Type.
-     *
-     * @return string
      */
-    public function getCard(): string
+    public function getCard(): ?string
     {
         return $this->card;
     }
 
     /**
      * Set the Card Type.
-     *
-     * @param string $card
-     * @return static
      */
     public function setCard(string $card): static
     {
@@ -64,46 +53,36 @@ class Twitter implements Renderable
 
     /**
      * Get the Card Site.
-     *
-     * @return string
      */
-    public function getSite(): string
+    public function getSite(): ?string
     {
         return $this->site;
     }
 
     /**
      * Set the Card Site.
-     *
-     * @param string $site
-     * @return static
      */
     public function setSite(string $site): static
     {
-        $this->site = '@' . $site;
+        $this->site = $this->handle($site);
 
         return $this;
     }
 
     /**
      * Get the Card Creator.
-     *
-     * @return string
      */
-    public function getCreator(): string
+    public function getCreator(): ?string
     {
         return $this->creator;
     }
 
     /**
      * Set the Card Creator.
-     *
-     * @param string $creator
-     * @return static
      */
     public function setCreator(string $creator): static
     {
-        $this->creator = '@' . $creator;
+        $this->creator = $this->handle($creator);
 
         return $this;
     }
@@ -118,32 +97,31 @@ class Twitter implements Renderable
         $output = '';
 
         if ($this->card) {
-            $output .= '<meta name="twitter:card" content="' . $this->card . '">' . PHP_EOL;
+            $output .= $this->tag('twitter:card', $this->card);
         }
 
         if ($this->site) {
-            $output .= '<meta name="twitter:site" content="' . $this->site . '">' . PHP_EOL;
+            $output .= $this->tag('twitter:site', $this->site);
         }
 
         if ($this->creator) {
-            $output .= '<meta name="twitter:creator" content="' . $this->creator . '">' . PHP_EOL;
+            $output .= $this->tag('twitter:creator', $this->creator);
         }
 
-        if ($title = seo()->title?->get()) {
-            $output .= '<meta name="twitter:title" content="' . $title . '">' . PHP_EOL;
+        if ($title = seo()->title->get()) {
+            $output .= $this->tag('twitter:title', $title);
         }
 
-        if ($description = seo()->description?->get()) {
-            $output .= '<meta name="twitter:description" content="' . $description . '">' . PHP_EOL;
+        if ($description = seo()->description->get()) {
+            $output .= $this->tag('twitter:description', $description);
         }
 
-        if ($images = seo()->images?->get()) {
-            if (count($images) == 1) {
-                $output .= '<meta name="twitter:image" content="' . $images[0] . '">' . PHP_EOL;
-            } else {
-                foreach ($images as $index => $image) {
-                    $output .= '<meta name="twitter:image' . $index . '" content="' . $image . '">' . PHP_EOL;
-                }
+        // A Twitter card takes a single image.
+        foreach (seo()->images->get() ?? [] as $image) {
+            if (is_string($image)) {
+                $output .= $this->tag('twitter:image', $image);
+
+                break;
             }
         }
 
@@ -151,16 +129,32 @@ class Twitter implements Renderable
     }
 
     /**
+     * Prefix a Twitter username with a single `@`.
+     */
+    private function handle(string $username): string
+    {
+        return '@'.ltrim($username, '@');
+    }
+
+    /**
+     * Render one Twitter card tag.
+     */
+    private function tag(string $name, string $content): string
+    {
+        return '<meta name="'.$name.'" content="'.e($content).'">'.PHP_EOL;
+    }
+
+    /**
      * Get the element directives.
      *
-     * @return array
+     * @return array<string, \Closure(?string): string>
      */
     public function getDirectives(): array
     {
         return [
-            'twitterCard' => fn ($data) => '<?php seo()->twitter->setCard(' . $data . '); ?>',
-            'twitterSite' => fn ($data) => '<?php seo()->twitter->setSite(' . $data . '); ?>',
-            'twitterCreator' => fn ($data) => '<?php seo()->twitter->setCreator(' . $data . '); ?>',
+            'twitterCard' => fn (?string $data) => '<?php seo()->twitter->setCard('.$data.'); ?>',
+            'twitterSite' => fn (?string $data) => '<?php seo()->twitter->setSite('.$data.'); ?>',
+            'twitterCreator' => fn (?string $data) => '<?php seo()->twitter->setCreator('.$data.'); ?>',
         ];
     }
 }

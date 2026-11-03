@@ -8,26 +8,23 @@ use Pharaonic\Laravel\SEO\Contracts\SEOContract;
 class Article extends Model implements SEOContract
 {
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $fillable = ['title', 'description', 'keywords'];
+    protected $guarded = [];
 
     /**
      * Get SEO Data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function seo(): array
     {
-        return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'keywords' => $this->keywords,
+        return $this->getAttributes() + [
             'twitter' => [
-                'card' => 'app'
-            ]
+                'card' => 'app',
+            ],
         ];
     }
 }
