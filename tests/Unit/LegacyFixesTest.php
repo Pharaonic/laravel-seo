@@ -1,133 +1,112 @@
 <?php
 
-namespace Pharaonic\Laravel\SEO\Tests\Unit;
-
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobProcessing;
-use Mockery;
 use Pharaonic\Laravel\SEO\Classes\Manager;
 use Pharaonic\Laravel\SEO\Tests\Models\Article;
-use Pharaonic\Laravel\SEO\Tests\TestCase;
 
-/**
- * Each test covers a 2.x behavior that was wrong and is fixed from 6.0.0.
- */
-class LegacyFixesTest extends TestCase
-{
-    public function test_it_escapes_every_value(): void
-    {
-        $payload = '"><script>alert(1)</script>';
+// Each test covers a 2.x behavior that was wrong and is fixed from 6.0.0.
 
-        seo()->title->set($payload);
-        seo()->description->set($payload);
-        seo()->keywords->set([$payload]);
-        seo()->canonical->set($payload);
-        seo()->next->set($payload);
-        seo()->prev->set($payload);
-        seo()->alternates->add($payload, $payload);
-        seo()->images->add($payload);
-        seo()->openGraph->setSiteName($payload);
-        seo()->twitter->setCreator($payload);
+test('it escapes every value', function () {
+    $payload = '"><script>alert(1)</script>';
 
-        $html = seo()->render();
+    seo()->title->set($payload);
+    seo()->description->set($payload);
+    seo()->keywords->set([$payload]);
+    seo()->canonical->set($payload);
+    seo()->next->set($payload);
+    seo()->prev->set($payload);
+    seo()->alternates->add($payload, $payload);
+    seo()->images->add($payload);
+    seo()->openGraph->setSiteName($payload);
+    seo()->twitter->setCreator($payload);
 
-        $this->assertStringNotContainsString('<script>', $html);
-        $this->assertStringNotContainsString('"><', $html);
-        $this->assertStringContainsString('<title>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</title>', $html);
-    }
+    expect(seo()->render())
+        ->not->toContain('<script>')
+        ->not->toContain('"><')
+        ->toContain('<title>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</title>');
+});
 
-    public function test_open_graph_tags_use_the_property_attribute(): void
-    {
-        seo()->title->set('Home');
+test('open graph tags use the property attribute', function () {
+    seo()->title->set('Home');
 
-        $html = seo()->openGraph->render();
+    expect(seo()->openGraph->render())
+        ->toContain('<meta property="og:title" content="Home">')
+        ->not->toContain('name="og:');
+});
 
-        $this->assertStringContainsString('<meta property="og:title" content="Home">', $html);
-        $this->assertStringNotContainsString('name="og:', $html);
-    }
+test('a model sets the open graph card', function () {
+    // 2.x threw "Element open-graph not found."
+    seo()->model(new Article(['open-graph' => ['type' => 'article']]));
 
-    public function test_a_model_sets_the_open_graph_card(): void
-    {
-        // 2.x threw "Element open-graph not found."
-        seo()->model(new Article(['open-graph' => ['type' => 'article']]));
+    expect(seo()->openGraph->getType())->toBe('article');
+});
 
-        $this->assertSame('article', seo()->openGraph->getType());
-    }
+test('a model skips null values', function () {
+    // 2.x threw a TypeError.
+    seo()->model(new Article(['title' => null]));
 
-    public function test_a_model_skips_null_values(): void
-    {
-        // 2.x threw a TypeError.
-        seo()->model(new Article(['title' => null]));
+    expect(seo()->title->get())->toBeNull();
+});
 
-        $this->assertNull(seo()->title->get());
-    }
+test('card getters return null when nothing is set', function () {
+    // 2.x threw a TypeError.
+    config()->set('pharaonic.seo.default', []);
+    $seo = new Manager;
 
-    public function test_card_getters_return_null_when_nothing_is_set(): void
-    {
-        // 2.x threw a TypeError.
-        config()->set('pharaonic.seo.default', []);
-        $seo = new Manager;
+    expect($seo->openGraph->getType())->toBeNull()
+        ->and($seo->openGraph->getSiteName())->toBeNull()
+        ->and($seo->twitter->getCard())->toBeNull()
+        ->and($seo->twitter->getSite())->toBeNull()
+        ->and($seo->twitter->getCreator())->toBeNull();
+});
 
-        $this->assertNull($seo->openGraph->getType());
-        $this->assertNull($seo->openGraph->getSiteName());
-        $this->assertNull($seo->twitter->getCard());
-        $this->assertNull($seo->twitter->getSite());
-        $this->assertNull($seo->twitter->getCreator());
-    }
+test('twitter usernames get a single at sign', function () {
+    // 2.x rendered `@@site`.
+    seo()->twitter->setSite('@site')->setCreator('creator');
 
-    public function test_twitter_usernames_get_a_single_at_sign(): void
-    {
-        // 2.x rendered `@@site`.
-        seo()->twitter->setSite('@site')->setCreator('creator');
+    expect(seo()->twitter->getSite())->toBe('@site')
+        ->and(seo()->twitter->getCreator())->toBe('@creator');
+});
 
-        $this->assertSame('@site', seo()->twitter->getSite());
-        $this->assertSame('@creator', seo()->twitter->getCreator());
-    }
+test('twitter renders a single image', function () {
+    // 2.x rendered `twitter:image0`, `twitter:image1`, ...
+    seo()->images->add('/a.png')->add('/b.png');
 
-    public function test_twitter_renders_a_single_image(): void
-    {
-        // 2.x rendered `twitter:image0`, `twitter:image1`, ...
-        seo()->images->add('/a.png')->add('/b.png');
+    expect(seo()->twitter->render())
+        ->toContain('<meta name="twitter:image" content="/a.png">')
+        ->not->toContain('/b.png')
+        ->not->toContain('twitter:image0');
+});
 
-        $html = seo()->twitter->render();
+test('removing a value reindexes the list', function () {
+    // 2.x kept the gap, so `twitter:image` read an undefined `$images[0]`.
+    seo()->images->add('/a.png')->add('/b.png')->remove(0);
 
-        $this->assertStringContainsString('<meta name="twitter:image" content="/a.png">', $html);
-        $this->assertStringNotContainsString('/b.png', $html);
-        $this->assertStringNotContainsString('twitter:image0', $html);
-    }
+    expect(seo()->images->get())->toBe(['/b.png'])
+        ->and(seo()->twitter->render())->toContain('<meta name="twitter:image" content="/b.png">');
+});
 
-    public function test_removing_a_value_reindexes_the_list(): void
-    {
-        // 2.x kept the gap, so `twitter:image` read an undefined `$images[0]`.
-        seo()->images->add('/a.png')->add('/b.png')->remove(0);
+test('the copyright tag is named copyright', function () {
+    // 2.x rendered `<meta name="copyrights">`.
+    seo()->copyrights->set('Pharaonic');
 
-        $this->assertSame(['/b.png'], seo()->images->get());
-        $this->assertStringContainsString('<meta name="twitter:image" content="/b.png">', seo()->twitter->render());
-    }
+    expect(seo()->render())
+        ->toContain('<meta name="copyright" content="Pharaonic">')
+        ->not->toContain('copyrights');
+});
 
-    public function test_the_copyright_tag_is_named_copyright(): void
-    {
-        // 2.x rendered `<meta name="copyrights">`.
-        seo()->copyrights->set('Pharaonic');
+test('booting does not resolve the shared manager', function () {
+    // 2.x resolved it while booting, so an Octane worker shared its tags with every request.
+    $this->app->make('blade.compiler');
 
-        $this->assertStringContainsString('<meta name="copyright" content="Pharaonic">', seo()->render());
-        $this->assertStringNotContainsString('copyrights', seo()->render());
-    }
+    expect($this->app->resolved('pharaonic-seo'))->toBeFalse();
+});
 
-    public function test_booting_does_not_resolve_the_shared_manager(): void
-    {
-        // 2.x resolved it while booting, so an Octane worker shared its tags with every request.
-        $this->app->make('blade.compiler');
+test('each queued job starts with fresh tags', function () {
+    seo()->title->set('Previous job');
 
-        $this->assertFalse($this->app->resolved('pharaonic-seo'));
-    }
+    $this->app->make('events')->dispatch(new JobProcessing('sync', Mockery::mock(Job::class)));
 
-    public function test_each_queued_job_starts_with_fresh_tags(): void
-    {
-        seo()->title->set('Previous job');
-
-        $this->app->make('events')->dispatch(new JobProcessing('sync', Mockery::mock(Job::class)));
-
-        $this->assertNull(seo()->title->get());
-    }
-}
+    expect(seo()->title->get())->toBeNull();
+});
