@@ -106,7 +106,10 @@ test('booting does not resolve the shared manager', function () {
 test('each queued job starts with fresh tags', function () {
     seo()->title->set('Previous job');
 
-    $this->app->make('events')->dispatch(new JobProcessing('sync', Mockery::mock(Job::class)));
+    // Laravel 11+ reads the job payload in its own JobProcessing listener.
+    $job = Mockery::mock(Job::class, ['payload' => []]);
+
+    $this->app->make('events')->dispatch(new JobProcessing('sync', $job));
 
     expect(seo()->title->get())->toBeNull();
 });
