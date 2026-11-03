@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## 6.0.0 - Unreleased
+## 6.0.0 - 2026-11-03
 
 The first release of the Laravel 6 line. It continues the 2.x code with the fixes and deprecations below.
 
