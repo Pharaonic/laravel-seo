@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 13.0.0 - Unreleased
+
+### Compatibility
+
+- Laravel 13 on PHP 8.3, 8.4 or 8.5. PHP 8.2 is no longer supported on this line.
+- The same API and output as 12.0.0, including the deprecated 2.x names.
+
 ## 12.0.0 - Unreleased
 
 ### Compatibility
