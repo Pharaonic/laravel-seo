@@ -39,6 +39,8 @@ class Manifest extends SingleElement
 }
 ```
 
+`seo()->toArray()` returns the value under the element's name, whatever `render()` prints. Override `toArray()` when it should return something else.
+
 The element is read as `seo()->{'theme-color'}`, and gets the `@seoThemeColor` directive. A `MultipleElement` also gets a singular directive, such as `@seoTheme` for `themes`, which calls an `add()` method that you define.
 
 :::info Errors
