@@ -9,6 +9,7 @@
 | `->{element}` | The element, such as `title`, `openGraph` or `twitter`. Throws `InvalidArgumentException` when unknown | element |
 | `model(Model $model)` | Applies the data of a model that implements `SEOContract` | `void` |
 | `render()` | Every tag, one per line | `string` |
+| `toArray()` | The content of every rendered tag and the `images` list by name, not escaped | `array` |
 | `getDirectives()` | The directive of every element, by name | `array` |
 
 ### Single Elements
