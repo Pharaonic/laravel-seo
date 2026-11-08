@@ -36,4 +36,22 @@ class Alternates extends MultipleElement
 
         return implode(PHP_EOL, $links);
     }
+
+    /**
+     * Get the rendered content by name as language => URL, not escaped.
+     *
+     * @return array<string, array<string, string>>
+     */
+    public function toArray(): array
+    {
+        $urls = [];
+
+        foreach ($this->content ?? [] as $alternate) {
+            if (is_array($alternate) && is_string($alternate['lang'] ?? null) && is_string($alternate['url'] ?? null)) {
+                $urls[$alternate['lang']] = $alternate['url'];
+            }
+        }
+
+        return $urls ? [$this->name => $urls] : [];
+    }
 }
