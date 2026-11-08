@@ -21,6 +21,7 @@ Configuration keys (`pharaonic.seo.*`), publish tags, and registered Blade, Arti
 - `seo()` resolves the `pharaonic-seo` singleton, a `Classes\Manager`. Elements are read as properties (`seo()->title`), cards as `seo()->openGraph` and `seo()->twitter`.
 - Custom elements extend `SingleElement` or `MultipleElement` and are added through `pharaonic.seo.elements`; each gets `@seo<Name>` and `@<name>` directives from its `getDirectives()`.
 - Every rendered value is HTML-escaped; `@seo` echoes the rendered tags unescaped.
+- `toArray()` reads the elements directly, never the rendered HTML, and returns the content of the rendered tags and the `images` list, not escaped. The manager does not implement `Arrayable`: the router would turn `return seo();` into JSON, and that response is HTML.
 - `pharaonic-seo` holds the tags of one request or one queued job: booting must never resolve it (the directives use a manager of their own), and `JobProcessing` forgets it.
 - Canonical directives are `seo`-prefixed (`@seoTitle`). The 2.x names are deprecated aliases: unprefixed directives, the `Pharaonic.seo` key (still read before `pharaonic.seo` when an application published the 2.x file), the `open-graph` key, the `copyrights` element (an alias of `copyright`, also as `@copyrights` and the `Copyrights` class), and the `config` and `seo` publish tags. They stay on every existing line and are removed only in the first line that supports PHP 8.6.
 
