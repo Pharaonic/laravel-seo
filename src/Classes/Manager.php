@@ -238,6 +238,24 @@ class Manager implements Renderable
     }
 
     /**
+     * Get the name and value of every element, in the order of render(). Values are not escaped: the page that prints them must escape them.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        $tags = [];
+
+        foreach ($this->elements as $element) {
+            if (is_object($element)) {
+                $tags = array_merge($tags, $element->toArray());
+            }
+        }
+
+        return $tags;
+    }
+
+    /**
      * Get a package setting. A 2.x application published it as `config/Pharaonic/seo.php`.
      *
      * @return array<mixed>
