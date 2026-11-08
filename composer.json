@@ -86,6 +86,7 @@
                 "ignore": {
                     "laravel/framework": "No fixed release within Laravel 9; the application chooses the framework release.",
                     "symfony/http-foundation": "No fixed release within Laravel 9; the application chooses the framework release.",
+                    "symfony/http-kernel": "No fixed release within Laravel 9; the application chooses the framework release.",
                     "symfony/mailer": "No fixed release within Laravel 9; the application chooses the framework release.",
                     "symfony/mime": "No fixed release within Laravel 9; the application chooses the framework release.",
                     "symfony/process": "No fixed release within Laravel 9; the application chooses the framework release.",
