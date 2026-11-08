@@ -98,36 +98,52 @@ class Twitter implements Renderable
     {
         $output = '';
 
+        foreach ($this->toArray() as $name => $content) {
+            $output .= $this->tag($name, $content);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Get the rendered content by name, not escaped.
+     *
+     * @return array<string, string>
+     */
+    public function toArray(): array
+    {
+        $tags = [];
+
         if ($this->card) {
-            $output .= $this->tag('twitter:card', $this->card);
+            $tags['twitter:card'] = $this->card;
         }
 
         if ($this->site) {
-            $output .= $this->tag('twitter:site', $this->site);
+            $tags['twitter:site'] = $this->site;
         }
 
         if ($this->creator) {
-            $output .= $this->tag('twitter:creator', $this->creator);
+            $tags['twitter:creator'] = $this->creator;
         }
 
         if ($title = seo()->title->get()) {
-            $output .= $this->tag('twitter:title', $title);
+            $tags['twitter:title'] = $title;
         }
 
         if ($description = seo()->description->get()) {
-            $output .= $this->tag('twitter:description', $description);
+            $tags['twitter:description'] = $description;
         }
 
         // A Twitter card takes a single image.
         foreach (seo()->images->get() ?? [] as $image) {
             if (is_string($image)) {
-                $output .= $this->tag('twitter:image', $image);
+                $tags['twitter:image'] = $image;
 
                 break;
             }
         }
 
-        return $output;
+        return $tags;
     }
 
     /**

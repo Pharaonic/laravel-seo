@@ -52,4 +52,14 @@ abstract class SingleElement extends BaseElement
 
         return '<meta name="'.e($this->name).'" content="'.e($this->content).'">';
     }
+
+    /**
+     * Get the rendered content by name, not escaped.
+     *
+     * @return array<string, string>
+     */
+    public function toArray(): array
+    {
+        return $this->content ? [$this->name => $this->content] : [];
+    }
 }
