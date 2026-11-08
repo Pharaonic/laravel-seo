@@ -51,3 +51,37 @@ seo()->title->clear()->get();   // null
 :::tip Render to a String
 `seo()->render()` returns the same HTML as `@seo`, for places outside Blade.
 :::
+
+### As an Array
+
+`seo()->toArray()` returns the content of the same tags and the `images` list, for an API or a JavaScript frontend. A tag with no content is left out.
+
+```php
+seo()->toArray();
+
+[
+    'title' => 'Pharaonic',
+    'description' => 'Open-source packages for Laravel.',
+    'keywords' => 'laravel, packages, php',
+    'alternates' => ['ar' => 'https://example.com/ar'],
+    'images' => ['https://example.com/images/cover.png'],
+    'canonical' => 'https://example.com',
+    'og:url' => 'https://example.com',
+    'og:locale' => 'en',
+    'og:locale:alternate' => ['ar'],
+    'og:type' => 'website',
+    'og:title' => 'Pharaonic',
+    'og:description' => 'Open-source packages for Laravel.',
+    'og:image' => ['https://example.com/images/cover.png'],
+    'twitter:card' => 'summary',
+    'twitter:title' => 'Pharaonic',
+    'twitter:description' => 'Open-source packages for Laravel.',
+    'twitter:image' => 'https://example.com/images/cover.png',
+]
+```
+
+`alternates` is keyed by language, and `images`, `og:locale:alternate` and `og:image` are always lists. `images` has no tag of its own: `render()` prints the images through the cards. A custom element is returned under its own name.
+
+:::warning Escaping
+These values are not escaped. Print them through something that escapes, such as Blade's `{{ }}` or a frontend framework's head manager.
+:::
