@@ -60,6 +60,16 @@ abstract class MultipleElement extends BaseElement
     }
 
     /**
+     * Get the rendered content by name, not escaped.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->content ? [$this->name => $this->content] : [];
+    }
+
+    /**
      * Get the element directives.
      *
      * @return array<string, \Closure(?string): string>
