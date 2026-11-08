@@ -73,41 +73,67 @@ class OpenGraph implements Renderable
      */
     public function render()
     {
-        $app = Container::getInstance();
-        $url = $app->make('url');
+        $output = '';
 
-        $output = $this->tag('og:url', $url instanceof UrlGenerator ? $url->current() : '')
-            .$this->tag('og:locale', $app instanceof Application ? $app->getLocale() : '');
-
-        foreach (seo()->alternates->get() ?? [] as $alternate) {
-            if (is_array($alternate) && is_string($alternate['lang'] ?? null)) {
-                $output .= $this->tag('og:locale:alternate', str_replace('.', '_', $alternate['lang']));
-            }
-        }
-
-        if ($this->type) {
-            $output .= $this->tag('og:type', $this->type);
-        }
-
-        if ($this->siteName) {
-            $output .= $this->tag('og:site_name', $this->siteName);
-        }
-
-        if ($title = seo()->title->get()) {
-            $output .= $this->tag('og:title', $title);
-        }
-
-        if ($description = seo()->description->get()) {
-            $output .= $this->tag('og:description', $description);
-        }
-
-        foreach (seo()->images->get() ?? [] as $image) {
-            if (is_string($image)) {
-                $output .= $this->tag('og:image', $image);
+        foreach ($this->toArray() as $property => $content) {
+            foreach ((array) $content as $value) {
+                $output .= $this->tag($property, $value);
             }
         }
 
         return $output;
+    }
+
+    /**
+     * Get the rendered content by property, not escaped. `og:locale:alternate` and `og:image` are lists.
+     *
+     * @return array<string, string|list<string>>
+     */
+    public function toArray(): array
+    {
+        $app = Container::getInstance();
+        $url = $app->make('url');
+
+        $tags = [
+            'og:url' => $url instanceof UrlGenerator ? $url->current() : '',
+            'og:locale' => $app instanceof Application ? $app->getLocale() : '',
+        ];
+
+        $locales = [];
+
+        foreach (seo()->alternates->get() ?? [] as $alternate) {
+            if (is_array($alternate) && is_string($alternate['lang'] ?? null)) {
+                $locales[] = str_replace('.', '_', $alternate['lang']);
+            }
+        }
+
+        if ($locales) {
+            $tags['og:locale:alternate'] = $locales;
+        }
+
+        if ($this->type) {
+            $tags['og:type'] = $this->type;
+        }
+
+        if ($this->siteName) {
+            $tags['og:site_name'] = $this->siteName;
+        }
+
+        if ($title = seo()->title->get()) {
+            $tags['og:title'] = $title;
+        }
+
+        if ($description = seo()->description->get()) {
+            $tags['og:description'] = $description;
+        }
+
+        $images = array_values(array_filter(seo()->images->get() ?? [], 'is_string'));
+
+        if ($images) {
+            $tags['og:image'] = $images;
+        }
+
+        return $tags;
     }
 
     /**
