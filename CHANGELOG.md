@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 10.1.0 - Unreleased
+
+### Added
+
+- `seo()->toArray()` returns the content of the tags that `render()` prints and the `images` list, by name and not escaped, including `og:*`, `twitter:*` and custom elements.
+
 ## 10.0.0 - 2026-11-03
 
 ### Compatibility
