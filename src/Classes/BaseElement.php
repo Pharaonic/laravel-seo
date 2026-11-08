@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 /**
  * @method static set(string|array<mixed> $value)
+ * @method array<string, mixed> toArray()
  */
 abstract class BaseElement implements Renderable
 {
